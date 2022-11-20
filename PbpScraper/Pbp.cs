@@ -22,7 +22,7 @@
 			public PbpHeader(Stream stream) : this(new BinaryReader(stream)) { }
 			public PbpHeader(BinaryReader binaryReader)
 			{
-				for (int i = 0; i < 6; i++)
+				for (int i = 0; i < CorrectSignature.Length; i++)
 					if ((Signature[i] = binaryReader.ReadChar()) != CorrectSignature[i])
 						throw new InvalidDataException("Invalid PBP signature!");
 				Version = binaryReader.ReadInt32();
@@ -40,6 +40,14 @@
 				binaryReader.BaseStream.Seek(Header.Offsets[fileNumber], SeekOrigin.Begin);
 				Files[fileNumber] = binaryReader.ReadBytes(Header.Offsets[fileNumber + 1] - Header.Offsets[fileNumber]);
 			}
+		}
+		public void SaveFiles(string path = "")
+		{
+			if (!string.IsNullOrEmpty(path))
+				Directory.CreateDirectory(path);
+			for (int fileNumber = 0; fileNumber < Files.Length; fileNumber++)
+				if (Files[fileNumber] is not null)
+					File.WriteAllBytes(Path.Combine(path, Filenames[fileNumber]), Files[fileNumber]);
 		}
 	}
 }

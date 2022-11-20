@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PbpScraper": {
+      "commandName": "Project",
+      "commandLineArgs": "EBOOT.PBP"
+    }
+  }
+}
